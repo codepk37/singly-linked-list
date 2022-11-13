@@ -1,0 +1,167 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+//single L.L
+
+class Node{
+public:
+	int data;
+	Node* next;
+	Node(int data){
+		this->data=data;
+		this->next=NULL;
+	}
+};
+
+class List{
+	Node* head=NULL;
+	Node* tail=NULL;
+public:
+
+	void insertH(int x);
+	void insertT(int x);
+	void deleteH();
+	void deleteT();
+	void insertA(int x,int com);
+	void insertB(int x,int com);
+	void deleteP(int x);
+	void print();
+
+};
+
+
+void List::deleteP(int x){
+	Node* temp=head;
+	Node* prev=NULL;
+	while(temp!=NULL && temp->data!=x){
+		prev=temp;
+		temp=temp->next;
+	}
+	if(temp==NULL){cout<<" not found "<<x<<endl;return;}
+
+	if(head->data==x){deleteH();return;}
+
+	if(tail->data==x){deleteT();return;}
+
+	if(temp->data==x){
+		prev->next=temp->next;
+		delete temp;
+	}
+}
+
+void List::insertA(int x,int com){
+	Node* temp=head;
+	while(temp!=NULL && temp->data!=com){
+		temp=temp->next;
+	}
+	if(temp==NULL){cout<<"not found "<<com<<" \n";}
+	else if(temp->data==com){//temp having com
+		Node *nn=new Node(x);
+		if(temp->next==NULL){tail=nn;}
+		nn->next=temp->next;
+		temp->next=nn;
+
+	}
+}
+
+void List::insertB(int x,int com){
+	Node* temp=head;
+	Node* prev=NULL;
+	while(temp!=NULL && temp->data!=com){
+		prev=temp;
+		temp=temp->next;
+	}
+	if(temp==NULL){cout<<" not found "<<com<<endl;}
+	else if(temp->data==com){
+		Node* nn=new Node(x);
+		if(head->data==com){nn->next=temp;head=nn;return;}
+		prev->next=nn;
+		nn->next=temp;
+	}
+}
+
+void List::deleteH(){
+	if(head==NULL){
+		cout<<" already empty \n";
+		return;
+	}
+	else{
+		Node*temp=head;
+		if(head->next==NULL){
+			tail=NULL;
+		}
+		head=head->next;
+		delete temp;
+
+	}
+}
+
+void List::deleteT(){
+	if(head==NULL){
+		cout<<" already empty \n";
+		return;
+	}
+	else{
+		if(head->next==NULL){delete head;tail=NULL;head=NULL;return;}
+		Node*curr=head;
+		Node*prev=NULL;
+		while(curr->next!=NULL){
+			prev=curr;
+			curr=curr->next;
+		}
+		prev->next=NULL;
+		tail=prev;
+		delete curr;
+
+
+	}
+}
+
+
+void List::insertH(int x){
+	if(head==NULL){
+		Node* temp=new Node(x);
+		head=temp;
+		tail=temp;
+
+	}
+	else{
+		Node*temp=new Node(x);
+
+		temp->next=head;
+		head=temp;
+	}
+}
+void List::insertT(int x){
+	if(head==NULL){
+		Node* temp=new Node(x);
+		head=temp;
+		tail=temp;
+
+	}
+	else{
+		Node* temp=new Node(x);
+		tail->next=temp;
+		tail=temp;
+	}
+}
+void List::print(){
+	Node* temp=head;
+	while(temp!=NULL){
+		cout<<temp->data<<" ";
+		temp=temp->next;
+	}
+	cout<<endl;
+}
+
+int main(){
+	List lis;
+	lis.insertH(2);
+	lis.insertB(1,2);
+	lis.insertA(3,2);
+	lis.insertT(4);
+	lis.deleteH();
+	lis.deleteT();
+	lis.deleteP(5);
+	lis.print();
+}
